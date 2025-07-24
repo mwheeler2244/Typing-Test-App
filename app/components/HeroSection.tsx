@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback, useMemo, memo } from "react";
+import React, { useState, useEffect, memo } from "react";
 import { motion } from "framer-motion";
 import { Keyboard, Clock, BarChart2, ArrowRight } from "lucide-react";
 import { Raleway } from "next/font/google";
@@ -271,5 +271,6 @@ const HeroSection = memo(({ onNavigate, onPractice }: NavigationProps) => {
     </section>
   );
 });
+HeroSection.displayName = "HeroSection";
 
 export default HeroSection;

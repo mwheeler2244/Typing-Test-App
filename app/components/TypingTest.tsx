@@ -46,7 +46,6 @@ const TypingTest = memo(
     const [promptText, setPromptText] = useState(getRandomPrompt());
     const [userInput, setUserInput] = useState("");
     const [startTime, setStartTime] = useState<number | null>(null);
-    const [endTime, setEndTime] = useState<number | null>(null);
     const [timeLeft, setTimeLeft] = useState(duration);
     const [wpm, setwpm] = useState(0);
     const [typingAccuracy, setTypingAccuracy] = useState(0);
@@ -61,7 +60,6 @@ const TypingTest = memo(
       setPromptText(getRandomPrompt());
       setUserInput("");
       setStartTime(null);
-      setEndTime(null);
       setTimeLeft(duration);
       setwpm(0);
       setTypingAccuracy(0);
@@ -74,7 +72,6 @@ const TypingTest = memo(
     }, [duration]);
 
     const finishTest = useCallback(() => {
-      setEndTime(Date.now());
       setTestDone(true);
       const promptWords = getWords(promptText);
       const inputWords = getWords(userInput);
@@ -270,10 +267,12 @@ const TypingTest = memo(
             transition={{ delay: 0.5 }}
           >
             You typed {inputWords.length} words in {duration - timeLeft}{" "}
-            seconds. That's {calculatedWpm} WPM with {incorrectWords} errors.
+            seconds. That&apos;s {calculatedWpm} WPM with {incorrectWords}{" "}
+            errors.
             {isPractice && (
               <span className="block mt-2 text-primary font-medium">
-                This was a practice test - results won't be saved to your stats.
+                This was a practice test - results won&apos;t be saved to your
+                stats.
               </span>
             )}
           </motion.p>
@@ -478,5 +477,6 @@ const TypingTest = memo(
     );
   }
 );
+TypingTest.displayName = "TypingTest";
 
 export default TypingTest;

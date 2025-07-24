@@ -31,13 +31,14 @@ const Link = memo(
   }: {
     onClick?: () => void;
     children: React.ReactNode;
-    [key: string]: any;
+    [key: string]: unknown;
   }) => (
     <a onClick={onClick} className="cursor-pointer" {...props}>
       {children}
     </a>
   )
 );
+Link.displayName = "Link";
 
 type NavigationProps = {
   onNavigate: (target: "home" | "test" | "stats") => void;
@@ -262,5 +263,6 @@ const Navbar = memo(({ onNavigate, onPractice }: NavigationProps) => {
     </motion.header>
   );
 });
+Navbar.displayName = "Navbar";
 
 export default Navbar;

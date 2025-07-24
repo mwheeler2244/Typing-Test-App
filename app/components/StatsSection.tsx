@@ -21,7 +21,7 @@ const StatsSection = () => {
     if (!stored) return [];
     const results = JSON.parse(stored);
     const uniqueMap = new Map();
-    results.forEach((result: any) => {
+    results.forEach((result: { date: string }) => {
       uniqueMap.set(result.date, result);
     });
     const uniqueResults = Array.from(uniqueMap.values());
@@ -44,7 +44,7 @@ const StatsSection = () => {
   useEffect(() => {
     const uniqueResults = getStoredResults();
     setResults(uniqueResults);
-  }, []);
+  }, [getStoredResults]);
 
   const resetAllScores = useCallback(() => {
     localStorage.removeItem("typingResults");
@@ -274,5 +274,6 @@ const StatsSection = () => {
     </div>
   );
 };
+StatsSection.displayName = "StatsSection";
 
 export default StatsSection;

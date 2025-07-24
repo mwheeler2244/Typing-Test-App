@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useMemo, memo } from "react";
-import { motion } from "framer-motion";
 import { Timer, Keyboard, BarChart2, Trophy, Share, Clock } from "lucide-react";
 import { Raleway } from "next/font/google";
 
@@ -37,6 +36,7 @@ const FeatureCard = memo(
     );
   }
 );
+FeatureCard.displayName = "FeatureCard";
 
 const FeaturesSection = memo(() => {
   const featureList = useMemo(
@@ -115,5 +115,6 @@ const FeaturesSection = memo(() => {
     </section>
   );
 });
+FeaturesSection.displayName = "FeaturesSection";
 
 export default FeaturesSection;
