@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TypingMaster
+
+A modern, interactive typing test and practice platform built with Next.js. Improve your typing speed and accuracy, track your progress, and challenge yourself with detailed statistics and personal bests.
+
+## Features
+
+- **Multiple Time Options:** Choose between 15, 30, or 60 second typing tests.
+- **Realistic Typing Experience:** Practice with common words, phrases, and sentences.
+- **Detailed Statistics:** Track your WPM, accuracy, and errors after each test.
+- **Personal Bests:** Monitor your records and improvement over time.
+- **Share Your Progress:** Share your typing stats with friends and family.
+- **Real-time Feedback:** Get instant feedback on your typing accuracy and speed.
 
 ## Getting Started
 
-First, run the development server:
+Install dependencies:
+
+```bash
+npm install
+```
+
+Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the app.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `app/components/`
+  - `Navbar.tsx` – Responsive navigation bar
+  - `HeroSection.tsx` – Landing page hero with call-to-action
+  - `FeaturesSection.tsx` – Overview of platform features
+  - `TypingTest.tsx` – Main typing test logic and UI
+  - `StatsSection.tsx` – User statistics and progress tracking
+  - `Footer.tsx` – Footer with social links and credits
 
-## Learn More
+## Technologies Used
 
-To learn more about Next.js, take a look at the following resources:
+- Next.js 15
+- React 19
+- Tailwind CSS
+- Framer Motion (animations)
+- Chart.js (statistics)
+- TypeScript
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT

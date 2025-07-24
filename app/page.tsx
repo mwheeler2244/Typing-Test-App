@@ -1,103 +1,209 @@
-import Image from "next/image";
+"use client";
+
+import React, { useState, useEffect, useCallback } from "react";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import HeroSection from "./components/HeroSection";
+import FeaturesSection from "./components/FeaturesSection";
+import TypingTest from "./components/TypingTest";
+import StatsSection from "./components/StatsSection";
+import { Raleway } from "next/font/google";
+
+const raleway = Raleway({
+  weight: ["400", "500", "600", "700"],
+  subsets: ["latin"],
+});
+
+const customStyles = `
+  :root {
+    // Color palette for light mode
+    --background: #ffffff;
+    --foreground: #171717;
+    --card: #ffffff;
+    --card-foreground: #171717;
+    --popover: #ffffff;
+    --popover-foreground: #171717;
+    --primary: #2563eb;
+    --primary-foreground: #ffffff;
+    --secondary: #f1f5f9;
+    --secondary-foreground: #171717;
+    --muted: #f1f5f9;
+    --muted-foreground: #64748b;
+    --accent: #f1f5f9;
+    --accent-foreground: #171717;
+    --destructive: #ef4444;
+    --destructive-foreground: #ffffff;
+    --border: #e2e8f0;
+    --input: #e2e8f0;
+    --ring: #2563eb;
+    --indigo: #6366f1;
+    --radius: 0.5rem;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      // Dark mode overrides
+      --background: #0a0a0a;
+      --foreground: #ededed;
+      --card: #171717;
+      --card-foreground: #ededed;
+      --popover: #171717;
+      --popover-foreground: #ededed;
+      --primary: #2563eb;
+      --primary-foreground: #ffffff;
+      --secondary: #27272a;
+      --secondary-foreground: #ededed;
+      --muted: #27272a;
+      --muted-foreground: #a1a1aa;
+      --accent: #27272a;
+      --accent-foreground: #ededed;
+      --destructive: #ef4444;
+      --destructive-foreground: #ffffff;
+      --border: #27272a;
+      --input: #27272a;
+      --ring: #2563eb;
+      --indigo: #818cf8;
+    }
+  }
+  // Animations
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+  .animate-pulse { animation: pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+  @keyframes fade-in-left {
+    0% { opacity: 0; transform: translateX(-20px); }
+    100% { opacity: 1; transform: translateX(0); }
+  }
+  .animate-fade-in-left { animation: fade-in-left 0.8s ease-out forwards; }
+  @keyframes fade-in-up {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  .animate-fade-in-up { animation: fade-in-up 0.8s ease-out forwards; }
+`;
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [currentPage, setCurrentPage] = useState<string>("home");
+  const [testTime, setTestTime] = useState<number>(30);
+  const [isPractice, setIsPractice] = useState(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+  useEffect(() => {
+    const handleSwitchToRealTest = () => {
+      setIsPractice(false);
+    };
+    const handleViewStats = () => {
+      setCurrentPage("stats");
+    };
+    window.addEventListener("switchToRealTest", handleSwitchToRealTest);
+    window.addEventListener("viewStats", handleViewStats);
+    return () => {
+      window.removeEventListener("switchToRealTest", handleSwitchToRealTest);
+      window.removeEventListener("viewStats", handleViewStats);
+    };
+  }, []);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentPage]);
+
+  const goToPage = useCallback((target: "home" | "test" | "stats") => {
+    setCurrentPage(target);
+    setIsPractice(false);
+  }, []);
+
+  const startPractice = useCallback(() => {
+    setIsPractice(true);
+    setCurrentPage("test");
+  }, []);
+
+  const pickTestDuration = useCallback((newDuration: number) => {
+    setTestTime(newDuration);
+  }, []);
+
+  const saveTestResult = useCallback(
+    (result: {
+      wpm: number;
+      accuracy: number;
+      mistakes: number;
+      duration: number;
+    }) => {
+      if (isPractice) return;
+      const newResult = {
+        ...result,
+        date: new Date().toISOString(),
+      };
+      const stored = localStorage.getItem("typingResults");
+      const results = stored ? JSON.parse(stored) : [];
+      results.push(newResult);
+      localStorage.setItem("typingResults", JSON.stringify(results));
+    },
+    [isPractice]
+  );
+
+  return (
+    <div
+      className={`${raleway.className} min-h-screen flex flex-col bg-background text-foreground`}
+    >
+      <style jsx global>
+        {customStyles}
+      </style>
+      <Navbar onNavigate={goToPage} onPractice={startPractice} />
+      <main className="flex-grow pt-16">
+        {currentPage === "home" && (
+          <>
+            <HeroSection onNavigate={goToPage} onPractice={startPractice} />
+            <FeaturesSection />
+          </>
+        )}
+        {currentPage === "test" && (
+          <div className="container mx-auto px-4 py-12">
+            <div className="text-center mb-12">
+              <h1 className="text-4xl font-bold mb-4">
+                {isPractice ? "Practice Mode" : "Typing Test"}
+              </h1>
+              <p className="text-foreground/70 text-lg max-w-2xl mx-auto">
+                {isPractice
+                  ? "Practice mode - results won't be saved to your stats."
+                  : "Start typing in the input field below. The timer will begin as soon as you start typing."}
+              </p>
+              {isPractice && (
+                <button
+                  onClick={() => {
+                    setIsPractice(false);
+                  }}
+                  className="mt-4 px-6 py-2 rounded-full bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors"
+                >
+                  Switch to Test Mode
+                </button>
+              )}
+            </div>
+            <div className="flex justify-center mb-8">
+              <div className="flex items-center gap-4 p-3 rounded-full bg-secondary">
+                {[15, 30, 60].map((d) => (
+                  <button
+                    key={d}
+                    onClick={() => pickTestDuration(d)}
+                    className={`px-4 py-2 rounded-full flex items-center gap-1 cursor-pointer shadow-sm border ${
+                      testTime === d
+                        ? "bg-primary text-primary-foreground border-primary/30"
+                        : "bg-transparent hover:bg-background/50 border-secondary/30"
+                    } hover:shadow-md`}
+                  >
+                    <span>{d}s</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+            <TypingTest
+              duration={testTime}
+              onTestComplete={saveTestResult}
+              isPractice={isPractice}
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
+          </div>
+        )}
+        {currentPage === "stats" && <StatsSection />}
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      <Footer onNavigate={goToPage} onPractice={startPractice} />
     </div>
   );
 }
