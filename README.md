@@ -2,6 +2,8 @@
 
 A modern, interactive typing test and practice platform built with Next.js. Improve your typing speed and accuracy, track your progress, and challenge yourself with detailed statistics and personal bests.
 
+### 🌐 [Visit Our Live Website](https://typing-test-app-tau.vercel.app/)
+
 ## Features
 
 - **Multiple Time Options:** Choose between 15, 30, or 60 second typing tests.
